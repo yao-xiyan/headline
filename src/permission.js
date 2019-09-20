@@ -17,4 +17,4 @@ router.beforeEach(function (to, from, next) {
     next() // 放行
   }
 })
-export default router
+export default router // 导出一个实例
