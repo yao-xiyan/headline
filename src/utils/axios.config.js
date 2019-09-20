@@ -15,7 +15,13 @@ axios.interceptors.request.use(function (config) {
   // 对请求失败做处理
   return Promise.reject(error)
 })
-
+// 响应拦截
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做处理，执行成功时进入
+  return response.data ? response.data : {}
+}, function () {
+  // 执行失败时执行
+})
 export default axios
 // export default {
 //   install (Vue) {
