@@ -19,7 +19,7 @@
         <span slot="title">首页</span>
       </el-menu-item>
       <!-- 内容管理 二级菜单 el-submenu => el-menu-item-->
-      <el-submenu index="1">
+      <el-submenu index="/">
         <!-- el-submenu 插槽 title =>  一级显示内容 -->
         <template slot="title">
           <i class="el-icon-chat-line-round"></i>
@@ -31,7 +31,7 @@
         <el-menu-item index="/home/comment">评论列表</el-menu-item>
         <el-menu-item index="/home/material">素材管理</el-menu-item>
       </el-submenu>
-      <el-submenu>
+      <el-submenu index="/fan">
         <!-- title插槽时submenu 中显示的一级内容 -->
         <template slot="title">
           <i class="el-icon-s-custom"></i>
@@ -52,9 +52,9 @@
               <i class="el-icon-user-solid"></i>
               <span>管理员信息</span>
           </template>
-          <el-menu-item index="/home/admin1">一级管理员</el-menu-item>
-          <el-menu-item index="/home/admin2">二级管理员</el-menu-item>
-          <el-menu-item index="/home/admin3">三级管理员</el-menu-item>
+          <el-menu-item index="/home/adminone">一级管理员</el-menu-item>
+          <el-menu-item index="/home/adminsec">二级管理员</el-menu-item>
+          <el-menu-item index="/home/adminthird">三级管理员</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>

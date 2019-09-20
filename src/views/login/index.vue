@@ -86,7 +86,7 @@ export default {
             data: this.loginForm
           }).then(result => {
             // 将后台返回的token令牌存到储到前端缓存中
-            window.localStorage.setItem('user-token', result.data.data.token)
+            window.localStorage.setItem('user-token', result.data.token)
             this.$router.push('/home') // 跳转到路径为/home的页面
           }).catch(() => {
             // 提示信息
