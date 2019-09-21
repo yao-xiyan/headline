@@ -1,6 +1,7 @@
 // 权限
 import router from './router'
 // 全局前置首位
+// 每次路由改变都会进入
 router.beforeEach(function (to, from, next) {
   // 判断 拦截的范围
   if (to.path.startsWith('/home')) {

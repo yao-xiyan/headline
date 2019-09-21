@@ -49,9 +49,9 @@ export default {
       if (key === 'account') {
         // 跳转到 账户信息
         this.$router.push('/home/account')
-      } else if (key === 'git') {
+      } else if (key === 'gitUrl') {
         // 去到git项目
-        window.location.href = 'https://github.com/yao-xiyan/headline.git'
+        window.location.href = 'https://github.com/yao-xiyan/headline'
       } else {
         // 退出
         window.localStorage.clear() // 只能清除本项目的所有前端项目

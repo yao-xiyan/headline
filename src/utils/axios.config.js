@@ -45,7 +45,7 @@ axios.interceptors.response.use(function (response) {
       break
   }
   // element-ui 中的 单独引入
-  Message({ Message })
+  Message({ message }) // 属性：值 message 是属性
   // 返回新的promise 终止错误
   // 删除所有请求的catch
   return new Promise(function () {
