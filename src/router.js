@@ -19,7 +19,12 @@ export default new Router({
         {
           path: '', // 什么都不写默认二级路由
           component: Main
+        },
+        {
+          path: '/comment', // 评论列表路径
+          component: () => import('./views/comment')
         }
+
       ]
     },
     {

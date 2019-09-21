@@ -1,11 +1,12 @@
 <template>
-  <el-breadcrumb separator-class="el-icon-right" >
+ <!-- separator-class="el-icon-right" -->
+  <el-bread-crumb separator=">">
   <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
   <el-breadcrumb-item>
       <!-- 定义一个插槽 -->
-      <slot></slot>
+      <slot name='title'></slot>
   </el-breadcrumb-item>
-</el-breadcrumb>
+</el-bread-crumb>
 </template>
 
 <script>
