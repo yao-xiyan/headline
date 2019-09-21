@@ -1,9 +1,15 @@
 import { Message } from 'element-ui'
 // 负责对axios进行畜栏里
 import axios from 'axios'
+import jsonBig from 'json-bigint' // 引入大数据类型
 import router from '../permission' // 导入实例 Vue.prototype.$router = router
 // 设置常态值 将main.js的常态值移过来 净化main.js
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+
+axios.defaults.transformResponse = [function (data) {
+  return jsonBig.parse(data)
+}]
+
 // axios 请求拦截
 axios.interceptors.request.use(function (config) {
   // 发起请求做一些业务处理

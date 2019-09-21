@@ -23,7 +23,8 @@
         <template slot-scope="obj">
           <!-- 自定义内容 获取其他列的内容 -->
           <el-button size="small" type="text">修改</el-button>
-          <el-button
+          <!-- 当成功的时候为 -->
+          <el-button :style="{color: obj.row.comment_status ? '#F56C6C' : '#409EFF'}"
             @click="btSwitch(obj.row)"
             size="small"
             type="text"
@@ -60,7 +61,7 @@ export default {
     btSwitch (row) {
       // 使用 弹窗 组件
       let msg = row.comment_status ? '关闭评论' : '打开评论'
-      this.$confirm(`您确定要永久删除${msg}评论?`, '提示', {
+      this.$confirm(`您确定要${msg}?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -68,7 +69,7 @@ export default {
         this.$axios({
           url: 'comments/status',
           method: 'put',
-          params: { article_id: row.id }, // 路径参数
+          params: { article_id: row.id.toString() }, // 路径参数 //加.toString 装换成字符串
           data: { allow_comment: !row.comment_status }
         }).then(() => {
           this.getComment() // 重新拉取数据
