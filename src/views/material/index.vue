@@ -17,8 +17,8 @@
           <el-card class="img-item" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
             <div class="operate">
-              <i :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
-              <i @click="deleteImg(id)" class="el-icon-delete-solid"></i>
+              <i @click="switchCollection(item.id)" :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
+              <i @click="deleteImg(item.id)" class="el-icon-delete-solid"></i>
             </div>
           </el-card>
         </div>
@@ -70,14 +70,21 @@ export default {
     }
   },
   methods: {
+    // 收藏和取消收藏
+    switchCollection () {
+
+    },
     // 删除图片
     deleteImg (id) {
-      this.$axios({
-        url: `user/images/${id}`,
-        method: 'delete'
-      }).then(
-
-      )
+      this.$confirm('您确定要删除该图片吗？').then(() => {
+        // 如果点击了确定
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.getMaterial()
+        })
+      })
     },
     // 上传方法
     uploadImg (params) {

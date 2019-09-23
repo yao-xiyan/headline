@@ -7,7 +7,7 @@ import router from '../permission' // 导入实例 Vue.prototype.$router = route
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 
 axios.defaults.transformResponse = [function (data) {
-  return jsonBig.parse(data)
+  return data ? jsonBig.parse(data) : {} // 换了一个转化方法 使得计算更精确 保证id不失真
 }]
 
 // axios 请求拦截
