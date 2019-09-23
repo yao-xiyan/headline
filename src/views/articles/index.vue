@@ -33,11 +33,12 @@
     <div class="article-item" v-for="(item,index) in list" :key="index">
       <!-- 左侧 -->
       <div class="left">
-        <img src="../../assets/img/404.png" alt="">
+        <img :src="item.cover.images.length ? item.cover.images[0] : ''" alt="">
         <div class="info">
-          <span class="title">好嗨哟！感觉人生达到了高潮！</span>
+          <!-- 用插值表达式换成动态值 -->
+          <span class="title">{{ item.title }}</span>
           <el-tag class="status">已发表</el-tag>
-          <span class="date">2019-9-23 22:00:00</span>
+          <span class="date">{{ item.pubdate }}</span>
         </div>
       </div>
       <!-- 右侧 -->
@@ -54,8 +55,26 @@
 export default {
   data () {
     return {
-      list: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      // list: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      list: [],
+      // 默认图片转码 转为Uid的格式 将图片转为位
+      defaultImg: require('../../assets/img/dafault.gif') // 默认图片
     }
+  },
+  methods: {
+    // 获取文章列表
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(resulet => {
+        this.list = resulet.data.results // 将接口的
+      })
+    }
+  },
+
+  // 钩子函数
+  created () {
+    this.getArticles() // 获取调用
   }
 }
 </script>
