@@ -23,10 +23,12 @@ export default new Router({
         {
           path: 'comment', // 评论列表路径
           component: () => import('./views/comment')
+
         },
         {
-          path: 'material', // 素材管理路径
-          component: () => import('./views/material')
+          // 全称 /home/articles
+          path: 'articles', // 素材管理路径
+          component: () => import('./views/articles')
         }
       ]
     },

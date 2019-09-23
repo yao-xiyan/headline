@@ -18,7 +18,7 @@
             <img :src="item.url" alt />
             <div class="operate">
               <i :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <i @click="deleteImg(id)" class="el-icon-delete-solid"></i>
             </div>
           </el-card>
         </div>
@@ -70,6 +70,16 @@ export default {
     }
   },
   methods: {
+    // 删除图片
+    deleteImg (id) {
+      this.$axios({
+        url: `user/images/${id}`,
+        method: 'delete'
+      }).then(
+
+      )
+    },
+    // 上传方法
     uploadImg (params) {
       const data = new FormData() // 声明一个新的表单
       data.append('image', params.file)
