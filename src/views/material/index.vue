@@ -17,7 +17,7 @@
           <el-card class="img-item" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
             <div class="operate">
-              <i @click="switchCollection(item.id)" :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
+              <i @click="switchCollection(item)" :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
               <i @click="deleteImg(item.id)" class="el-icon-delete-solid"></i>
             </div>
           </el-card>
@@ -71,8 +71,17 @@ export default {
   },
   methods: {
     // 收藏和取消收藏
-    switchCollection () {
-
+    switchCollection (item) {
+      let mess = item.is_collected ? '取消' : '取消收藏'
+      this.$confirm(`您确定要${mess}该图片吗？`).then(() => {
+        this.$axios({
+          url: `/user/images/${item.id}`,
+          method: 'put',
+          data: { collect: !item.is_collected } // 取反 收藏和取消收藏和当前的状态是相反的
+        }).then(() => { // 收藏或者取消收藏成功 重新拉取数据
+          this.getMaterial()
+        })
+      })
     },
     // 删除图片
     deleteImg (id) {
