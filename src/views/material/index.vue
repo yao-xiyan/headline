@@ -6,7 +6,7 @@
       <template slot="title">素材管理</template>
     </bread-crumb>
     <!-- http-request 自定义上传 -->
-    <el-upload :show-file-list="false" :http-request="uploadImg" action="" class="upload">
+    <el-upload :show-file-list="false" :http-request="uploadImg" action="" class="a-upload">
       <el-button type="primary">上传图片</el-button>
     </el-upload>
     <!-- el-tabs => el-tab-pane -->
@@ -129,15 +129,16 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.upload {
+.a-upload {
   position: absolute;
   right: 20px;
   margin-top: -10px;
+  z-index: 1
 }
 .img-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   .img-item {
     width: 180px;
     height: 180px;

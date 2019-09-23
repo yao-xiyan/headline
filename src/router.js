@@ -26,8 +26,11 @@ export default new Router({
 
         },
         {
-          // 全称 /home/articles
-          path: 'articles', // 素材管理路径
+          path: 'material', // 素材管理路径
+          component: () => import('./views/material')
+        },
+        {
+          path: 'articles', // 内容列表路径
           component: () => import('./views/articles')
         }
       ]
