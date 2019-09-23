@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <!-- 面包屑 -->
     <bread-crumb slot='header'>
       <template slot='title'>内容列表</template>
@@ -37,7 +37,8 @@
         <div class="info">
           <!-- 用插值表达式换成动态值 -->
           <span class="title">{{ item.title }}</span>
-          <el-tag class="status">已发表</el-tag>
+          <!-- 使用过滤器写状态值 -->
+          <el-tag :type="item.status | statusType" class="status">{{ item.status | statusText}}</el-tag>
           <span class="date">{{ item.pubdate }}</span>
         </div>
       </div>
@@ -57,6 +58,7 @@ export default {
     return {
       // list: [1, 2, 3, 4, 5, 6, 7, 8, 9]
       list: [],
+      loading: false,
       // 默认图片转码 转为Uid的格式 将图片转为位
       defaultImg: require('../../assets/img/dafault.gif') // 默认图片
     }
@@ -64,14 +66,48 @@ export default {
   methods: {
     // 获取文章列表
     getArticles () {
+      this.loading = true
       this.$axios({
         url: '/articles'
       }).then(resulet => {
         this.list = resulet.data.results // 将接口的
+        this.loading = false
       })
     }
   },
-
+  filters: {
+    // 定义一个过滤器处理显示文本
+    // 过滤器得到第一个参数 永远是前面传过来的值
+    // 文章状态  0 -草稿  1-待审核 2-审核通过 3-审核失败 4-已删除 status 状态
+    statusText (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        case 4:
+          return '已删除'
+      }
+    },
+    statusType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'success'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        case 4:
+          return 'info'
+      }
+    }
+  },
   // 钩子函数
   created () {
     this.getArticles() // 获取调用
