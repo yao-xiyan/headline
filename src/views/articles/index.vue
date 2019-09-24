@@ -7,18 +7,20 @@
     <el-form style="margin-left:50px;">
         <!-- 文章状态 -->
         <el-form-item label="文章状态：">
-          <el-radio-group>
-            <el-radio>全部</el-radio>
-            <el-radio>草稿</el-radio>
-            <el-radio>待审核</el-radio>
-            <el-radio>审核通过</el-radio>
-            <el-radio>审核失败</el-radio>
+          <el-radio-group v-model="formData.status">
+            <el-radio :label="-1">全部</el-radio>
+            <el-radio :label="0">草稿</el-radio>
+            <el-radio :label="1">待审核</el-radio>
+            <el-radio :label="2">审核通过</el-radio>
+            <el-radio :label="3">审核失败</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- 频道列表 -->
         <el-form-item label="频道列表：">
-          <el-select>
+          <el-select v-model="formData.channel_id">
+            <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name">
 
+            </el-option>
           </el-select>
         </el-form-item>
         <!-- 时间选择 -->
@@ -58,12 +60,26 @@ export default {
     return {
       // list: [1, 2, 3, 4, 5, 6, 7, 8, 9]
       list: [],
+      // 不做校验
+      formData: {
+        status: -1, // 文章状态
+        channel_id: '' // 频道列表id
+      },
+      channels: [], // 定义一个频道对象
       loading: false,
       // 默认图片转码 转为Uid的格式 将图片转为位
       defaultImg: require('../../assets/img/dafault.gif') // 默认图片
     }
   },
   methods: {
+    // 获取频道列表
+    getChannels () {
+      this.$axios({
+        url: '/channels'
+      }).then(result => {
+        this.channels = result.data.channels
+      })
+    },
     // 获取文章列表
     getArticles () {
       this.loading = true
@@ -111,6 +127,7 @@ export default {
   // 钩子函数
   created () {
     this.getArticles() // 获取调用
+    this.getChannels() //
   }
 }
 </script>
