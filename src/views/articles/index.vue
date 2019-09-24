@@ -7,7 +7,7 @@
     <el-form style="margin-left:50px;">
         <!-- 文章状态 -->
         <el-form-item label="文章状态：">
-          <el-radio-group v-model="formData.status">
+          <el-radio-group @change="changeCondition" v-model="formData.status">
             <el-radio :label="-1">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
             <el-radio :label="1">待审核</el-radio>
@@ -17,7 +17,7 @@
         </el-form-item>
         <!-- 频道列表 -->
         <el-form-item label="频道列表：">
-          <el-select v-model="formData.channel_id">
+          <el-select @change="changeCondition" v-model="formData.channel_id">
             <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name">
 
             </el-option>
@@ -26,16 +26,16 @@
         <!-- 时间选择 -->
         <el-form-item label="时间选择：">
           <!-- range-separator="至" -->
-          <el-date-picker type="daterange" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <!-- value-format 绑定的值 -->
+          <el-date-picker @change="changeCondition" v-model="formData.date" type="daterange" value-formate="" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
         </el-form-item>
     </el-form>
     <!-- 主体内容 -->
     <div class="total">共找到55091条符合条件的内容</div>
-    <!-- 布局 -->
     <div class="article-item" v-for="(item,index) in list" :key="index">
       <!-- 左侧 -->
       <div class="left">
-        <img :src="item.cover.images.length ? item.cover.images[0] : ''" alt="">
+        <img :src="item.cover.images.length ? item.cover.images[0] : defaultImg" alt="">
         <div class="info">
           <!-- 用插值表达式换成动态值 -->
           <span class="title">{{ item.title }}</span>
@@ -63,15 +63,38 @@ export default {
       // 不做校验
       formData: {
         status: -1, // 文章状态
-        channel_id: '' // 频道列表id
+        channel_id: null, // 频道列表id
+        date: []
       },
-      channels: [], // 定义一个频道对象
+      channels: [], // 定义一个频道数组
       loading: false,
-      // 默认图片转码 转为Uid的格式 将图片转为位
+      // 默认图片转码 转为Uid的格式 将图片转为base64位
       defaultImg: require('../../assets/img/dafault.gif') // 默认图片
     }
   },
   methods: {
+    // 状态变化事件
+    changeCondition () {
+      // 因为值改变时 formdata 已经是最新的值 所以直接可以用formdata的值请求
+      // alert(this.formData.status)
+      // let beginDate = this.formData.date.length ? this.formData.date[0] : null // 开始时间
+      // let overDate = this.formData.date.length > 1 ? this.fomData.date[1] : null // 结束时间
+      // 组装请求
+      let params = {
+        // 状态 如果为-1时
+        status: this.formData.status === -1 ? null : this.formData.status,
+        channel_id: this.formData.channel_id, // 频道id
+        begin_pubdate: this.formData.date.length ? this.formData.date[0] : null,
+        end_pubdate: this.formData.date.length > 1 ? this.fomData.date[1] : null // 结束时间
+      }
+      this.getArticles(params)
+      // let status = this.formData.status
+      // if (this.formData.status === 5) {
+      //   status = null
+      // } else {
+      //   status = this.formData.status
+      // }
+    },
     // 获取频道列表
     getChannels () {
       this.$axios({
@@ -81,10 +104,11 @@ export default {
       })
     },
     // 获取文章列表
-    getArticles () {
+    getArticles (params) {
       this.loading = true
       this.$axios({
-        url: '/articles'
+        url: '/articles',
+        params
       }).then(resulet => {
         this.list = resulet.data.results // 将接口的
         this.loading = false
