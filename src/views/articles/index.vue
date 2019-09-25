@@ -52,7 +52,7 @@
       </div>
       <!-- 右侧 -->
       <div class="right">
-        <span>
+        <span @click="goEdit(item.id)">
           <i class="el-icon-edit"></i>修改
         </span>
         <span @click="deleteArticles(item.id)">
@@ -100,6 +100,11 @@ export default {
     }
   },
   methods: {
+    // 传过去文章的id
+    goEdit (id) {
+      // 动态路由传参
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 切换页码
     changePage (newPage) {
       this.page.currentPage = newPage // 赋值给最新页码

@@ -1,5 +1,5 @@
 <template>
-    <el-card>
+    <el-card v-loading="loading">
         <!-- 面包屑 -->
         <bread-crumb slot="header">
             <!-- 具名插槽 -->
@@ -46,6 +46,7 @@
 export default {
   data () {
     return {
+      loading: false,
       // 定义一个频道对象
       channels: [],
       //   表单数据对象
@@ -69,12 +70,15 @@ export default {
   },
   methods: {
     getChannels () {
+      this.loading = true
       this.$axios({
         url: '/channels'
       }).then(result => {
         this.channels = result.data.channels // 获取文章频道
+        this.loading = false
       })
     },
+    // 发布文章和存为草稿
     publishArtcles (draft) {
       this.$refs.publishForm.validate(isOK => {
         if (isOK) {
