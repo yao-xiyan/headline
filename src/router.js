@@ -32,6 +32,10 @@ export default new Router({
         {
           path: 'articles', // 内容列表路径
           component: () => import('./views/articles')
+        },
+        {
+          path: 'publish', // 发布文章路径
+          component: () => import('./views/publish')
         }
       ]
     },

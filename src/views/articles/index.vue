@@ -250,6 +250,7 @@ export default {
     font-size: 12px;
     span {
       margin-right: 8px;
+      cursor: pointer;
     }
   }
 }
