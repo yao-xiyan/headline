@@ -27,7 +27,15 @@
         <el-form-item label="时间选择：">
           <!-- range-separator="至" -->
           <!-- value-format 绑定的值 -->
-          <el-date-picker @change="changeCondition" v-model="formData.date" type="daterange" value-formate="" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <!-- element-ui 日期组件 -->
+          <el-date-picker
+           @change="changeCondition"
+            v-model="formData.date"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
         </el-form-item>
     </el-form>
     <!-- 主体内容 -->
@@ -47,7 +55,7 @@
       <!-- 右侧 -->
       <div class="right">
         <span><i class="el-icon-edit"></i>修改</span>
-        <span><i class="el-icon-delete"></i>删除</span>
+        <span @click="deleteArticles(item.id)"><i class="el-icon-delete"></i>删除</span>
       </div>
     </div>
   </el-card>
@@ -63,7 +71,7 @@ export default {
       // 不做校验
       formData: {
         status: -1, // 文章状态
-        channel_id: null, // 频道列表id
+        channel_id: null, // 频道列表id 空字符串有值，但是是空字符串  null无值
         date: []
       },
       channels: [], // 定义一个频道数组
@@ -73,10 +81,21 @@ export default {
     }
   },
   methods: {
+    // 删除文章
+    deleteArticles (id) {
+      this.$confirm('您确定要删除文章吗？').then(() => {
+        this.$axios({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+
+        })
+      })
+    },
     // 状态变化事件
     changeCondition () {
       // 因为值改变时 formdata 已经是最新的值 所以直接可以用formdata的值请求
-      // alert(this.formData.status)
+      // alert(this.formData.date)
       // let beginDate = this.formData.date.length ? this.formData.date[0] : null // 开始时间
       // let overDate = this.formData.date.length > 1 ? this.fomData.date[1] : null // 结束时间
       // 组装请求
@@ -85,8 +104,11 @@ export default {
         status: this.formData.status === -1 ? null : this.formData.status,
         channel_id: this.formData.channel_id, // 频道id
         begin_pubdate: this.formData.date.length ? this.formData.date[0] : null,
-        end_pubdate: this.formData.date.length > 1 ? this.fomData.date[1] : null // 结束时间
+        end_pubdate: this.formData.date.length > 1 ? this.formData.date[1] : null // 结束时间
+        // page: this.page.currentPage,
+        // per_page: this.page.pageSize
       }
+      //
       this.getArticles(params)
       // let status = this.formData.status
       // if (this.formData.status === 5) {
@@ -98,7 +120,7 @@ export default {
     // 获取频道列表
     getChannels () {
       this.$axios({
-        url: '/channels'
+        url: '/channels' // 频道
       }).then(result => {
         this.channels = result.data.channels
       })
@@ -109,8 +131,8 @@ export default {
       this.$axios({
         url: '/articles',
         params
-      }).then(resulet => {
-        this.list = resulet.data.results // 将接口的
+      }).then(result => {
+        this.list = result.data.results // 将接口的
         this.loading = false
       })
     }
@@ -150,8 +172,8 @@ export default {
   },
   // 钩子函数
   created () {
-    this.getArticles() // 获取调用
-    this.getChannels() //
+    this.getChannels() // 获取列表
+    this.getArticles() // 获取文章
   }
 }
 </script>
