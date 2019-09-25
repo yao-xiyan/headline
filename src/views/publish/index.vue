@@ -78,25 +78,51 @@ export default {
         this.loading = false
       })
     },
+    // 根据文章Id 获取文章详情
+    getArticleById (Id) {
+      this.$axios({
+        url: `/articles/${Id}` // 这传过来的Id已经是字符串了
+      }).then(result => {
+        this.formData = result.data
+      })
+    },
     // 发布文章和存为草稿
     publishArtcles (draft) {
       this.$refs.publishForm.validate(isOK => {
         if (isOK) {
-          this.$axios({
-            url: '/articles',
-            method: 'post',
-            params: { draft }, // draft 为true时是草稿，为false时是正式内容
-            data: this.formData
-          }).then(() => {
+          let { articleId: Id } = this.$route.params
+          //   如果有传过来的Id就是编辑  没有就是新增
+          if (Id) {
+            // 修改和新增数据接口一样
+            this.$axios({
+              url: `/articles/${Id}`,
+              method: 'put',
+              params: { draft }, // draft 为true时是草稿，为false时是正式内容
+              data: this.formData
+            }).then(result => {
+              this.$router.push('/home/articles')
+            })
+          } else {
+            //   新增
+            this.$axios({
+              url: '/articles',
+              method: 'post',
+              params: { draft }, // draft 为true时是草稿，为false时是正式内容
+              data: this.formData
+            }).then(() => {
             // 发布成功了 回到内容列表
-            this.$router.push('/home/articles')
-          })
+              this.$router.push('/home/articles')
+            })
+          }
         }
       })
     }
   },
   created () {
     this.getChannels() // 获取频道
+    // 获取Id
+    let { articleId: Id } = this.$route.params // 有articleId就是编辑 没有就是新增
+    Id && this.getArticleById(Id) // 如果存在才执行后面逻辑
   }
 }
 </script>
