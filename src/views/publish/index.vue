@@ -90,30 +90,40 @@ export default {
     publishArtcles (draft) {
       this.$refs.publishForm.validate(isOK => {
         if (isOK) {
+          // 定义id
           let { articleId: Id } = this.$route.params
+          this.$axios({
+            url: Id ? `/articles/${Id}` : '/articles',
+            method: Id ? 'put' : 'post',
+            params: { draft },
+            data: this.formData
+          }).then(() => {
+            // 成功都是回到内容列表
+            this.$router.push('/home/articles')
+          })
           //   如果有传过来的Id就是编辑  没有就是新增
-          if (Id) {
-            // 修改和新增数据接口一样
-            this.$axios({
-              url: `/articles/${Id}`,
-              method: 'put',
-              params: { draft }, // draft 为true时是草稿，为false时是正式内容
-              data: this.formData
-            }).then(result => {
-              this.$router.push('/home/articles')
-            })
-          } else {
-            //   新增
-            this.$axios({
-              url: '/articles',
-              method: 'post',
-              params: { draft }, // draft 为true时是草稿，为false时是正式内容
-              data: this.formData
-            }).then(() => {
-            // 发布成功了 回到内容列表
-              this.$router.push('/home/articles')
-            })
-          }
+        //   if (Id) {
+        //     // 修改和新增数据接口一样
+        //     this.$axios({
+        //       url: `/articles/${Id}`,
+        //       method: 'put',
+        //       params: { draft }, // draft 为true时是草稿，为false时是正式内容
+        //       data: this.formData
+        //     }).then(result => {
+        //       this.$router.push('/home/articles')
+        //     })
+        //   } else {
+        //     //   新增
+        //     this.$axios({
+        //       url: '/articles',
+        //       method: 'post',
+        //       params: { draft }, // draft 为true时是草稿，为false时是正式内容
+        //       data: this.formData
+        //     }).then(() => {
+        //     // 发布成功了 回到内容列表
+        //       this.$router.push('/home/articles')
+        //     })
+        //   }
         }
       })
     }
