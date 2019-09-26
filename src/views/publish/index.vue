@@ -13,12 +13,12 @@
             </el-form-item>
             <!-- 内容 -->
             <el-form-item prop="content" label="内容">
-                <el-input v-model="formData.content" row="6" placeholder="请输入内容" type="textarea">
+                <quill-editor v-model="formData.content" style="height:300px">
 
-                </el-input>
+                </quill-editor>
             </el-form-item>
             <!-- 封面 -->
-            <el-form-item prop="cover" label="封面">
+            <el-form-item prop="cover" label="封面" style="margin-top:120px">
                 <el-radio-group v-model="formData.cover.type">
                     <el-radio :label="1">单图</el-radio>
                     <el-radio :label="3">三图</el-radio>
