@@ -19,7 +19,7 @@
             </el-form-item>
             <!-- 封面 -->
             <el-form-item prop="cover" label="封面" style="margin-top:120px">
-                <el-radio-group v-model="formData.cover.type">
+                <el-radio-group @change="changeType" v-model="formData.cover.type">
                     <el-radio :label="1">单图</el-radio>
                     <el-radio :label="3">三图</el-radio>
                     <el-radio :label="0">无图</el-radio>
@@ -62,13 +62,22 @@ export default {
       //   发布规则
       publishRules: {
         title: [{ required: true, message: '标题不能为空' },
-          { min: 2, max: 10, message: '标题长度控制在2~10位' }],
+          { min: 5, max: 30, message: '标题长度控制在5~30位' }],
         content: [{ required: true, message: '内容不能为空' }],
         channel_id: [{ required: true, message: '频道不能为空' }]
       }
     }
   },
   methods: {
+    // 类型改变时间
+    changeType () {
+      // 可以获得最新的type
+      // 根据type进行images的长度变化
+      alert(this.formData.cover.type)
+
+      // this.formData.cover.images = this.formData.cover.type === 3 ? ['', '', ''] : []
+    },
+    // 获取文章频道
     getChannels () {
       this.loading = true
       this.$axios({
