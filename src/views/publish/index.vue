@@ -26,6 +26,8 @@
                     <el-radio :label="-1">自动</el-radio>
                 </el-radio-group>
             </el-form-item>
+            <!-- 封面组件 传递父组件的images到子组件 -->
+            <cover-image :images="formData.cover.images"></cover-image>
             <!-- 频道 -->
             <el-form-item prop="channel_id" label="频道">
                 <!-- el-select下拉框 value没有会报错 -->
@@ -73,9 +75,17 @@ export default {
     changeType () {
       // 可以获得最新的type
       // 根据type进行images的长度变化
-      alert(this.formData.cover.type)
+      // alert(this.formData.cover.type)
+      // let that = this.formData.cover
+      // if (that.type === 1) {
+      //   that.images = ['']
+      // } else if (that.type === 3) {
+      //   that.images = ['', '', '']
+      // } else {
+      //   that.images = []
+      // }
 
-      // this.formData.cover.images = this.formData.cover.type === 3 ? ['', '', ''] : []
+      this.formData.cover.images = this.formData.cover.type === 1 ? [''] : this.formData.cover.type === 3 ? ['', '', ''] : []
     },
     // 获取文章频道
     getChannels () {
